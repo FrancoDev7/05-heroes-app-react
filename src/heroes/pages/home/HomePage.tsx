@@ -58,7 +58,7 @@ export const HomePage = () => {
                 })
               }
             >
-              All Characters ({summary?.totalHeroes})
+              Todos los Personajes ({summary?.totalHeroes})
             </TabsTrigger>
             <TabsTrigger
               value="favorites"
@@ -70,7 +70,7 @@ export const HomePage = () => {
                 })
               }
             >
-              Favorites ({favoriteCount})
+              Favoritos ({favoriteCount})
             </TabsTrigger>
             <TabsTrigger
               value="heroes"
@@ -96,7 +96,7 @@ export const HomePage = () => {
                 })
               }
             >
-              Villains ({summary?.villainCount})
+              Villanos ({summary?.villainCount})
             </TabsTrigger>
           </TabsList>
 
