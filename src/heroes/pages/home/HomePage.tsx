@@ -1,15 +1,16 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CustomHeader } from "@/components/custom/CustomHeader";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
 import { HeroStats } from "@/heroes/components/HeroStats";
 import { HeroGrid } from "@/heroes/components/HeroGrid";
 import { CustomPagination } from "@/components/custom/CustomPagination";
-import { CustomBreadCrumbs } from "@/components/custom/CustomBreadCrumbs";
 
 import { useHeroSummary } from "@/heroes/hooks/useHeroSummary";
-import { usePaginateHero } from "@/heroes/hooks/usePaginateHero";
+import { CustomHeader } from "@/components/custom/CustomHeader";
+import { CustomBreadCrumbs } from "@/components/custom/CustomBreadCrumbs";
+import { usePaginatedHero } from "@/heroes/hooks/usePaginateHero";
 
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,14 +18,14 @@ export const HomePage = () => {
   const activeTab = searchParams.get("tab") ?? "all";
   const page = searchParams.get("page") ?? "1";
   const limit = searchParams.get("limit") ?? "6";
-  const category = searchParams.get("category") ?? "aaa";
+  const category = searchParams.get("category") ?? "all";
 
   const selectedTab = useMemo(() => {
     const validTabs = ["all", "favorites", "heroes", "villains"];
     return validTabs.includes(activeTab) ? activeTab : "all";
   }, [activeTab]);
 
-  const { data: heroesResponse } = usePaginateHero(+page, +limit, category);
+  const { data: heroesResponse } = usePaginatedHero(+page, +limit, category);
   const { data: summary } = useHeroSummary();
 
   return (
@@ -33,9 +34,11 @@ export const HomePage = () => {
         {/* Header */}
         <CustomHeader
           title="Universo de SuperHéroes"
-          description="Descubre, explora y gestiona tus superhéroes y villanos favoritos"
+          description="Descubre, explora y administra super héroes y villanos"
         />
+
         <CustomBreadCrumbs currentPage="Super Héroes" />
+
         {/* Stats Dashboard */}
         <HeroStats />
 
@@ -53,7 +56,7 @@ export const HomePage = () => {
                 })
               }
             >
-              Todos los Personajes ({summary?.totalHeroes})
+              All Characters ({summary?.totalHeroes})
             </TabsTrigger>
             <TabsTrigger
               value="favorites"
@@ -72,7 +75,7 @@ export const HomePage = () => {
               onClick={() =>
                 setSearchParams((prev) => {
                   prev.set("tab", "heroes");
-                  prev.set("category", "heroes");
+                  prev.set("category", "hero");
                   prev.set("page", "1");
                   return prev;
                 })
@@ -85,38 +88,39 @@ export const HomePage = () => {
               onClick={() =>
                 setSearchParams((prev) => {
                   prev.set("tab", "villains");
-                  prev.set("category", "villains");
+                  prev.set("category", "villain");
                   prev.set("page", "1");
                   return prev;
                 })
               }
             >
-              Villanos ({summary?.villainCount})
+              Villains ({summary?.villainCount})
             </TabsTrigger>
           </TabsList>
 
-          {/* Mostrar todos los personajes */}
           <TabsContent value="all">
+            {/* Mostrar todos los personajes */}
             <HeroGrid heroes={heroesResponse?.heroes ?? []} />
           </TabsContent>
-          {/* Mostrar todos los Favoritos */}
           <TabsContent value="favorites">
-            <h1>favoirtess</h1>
-            <HeroGrid heroes={[]} />
+            {/* Mostrar todos los personajes favoritos */}
+            <h1>Favoritos!!!</h1>
+            {/* <HeroGrid heroes={heroesResponse?.heroes ?? []} /> */}
           </TabsContent>
-          {/* Mostrar todos los Heroes */}
           <TabsContent value="heroes">
-            <h1>heroe</h1>
+            {/* Mostrar todos los héroes */}
+            <h1>Héroes</h1>
             <HeroGrid heroes={heroesResponse?.heroes ?? []} />
           </TabsContent>
-          {/* Mostrar todos los Villanos */}
-          <TabsContent value="villanos">
-            <h1>villanios</h1>
+          <TabsContent value="villains">
+            {/* Mostrar todos los Villanos */}
+            <h1>Villanos</h1>
             <HeroGrid heroes={heroesResponse?.heroes ?? []} />
           </TabsContent>
         </Tabs>
 
         {/* Pagination */}
+
         <CustomPagination totalPages={heroesResponse?.pages ?? 1} />
       </>
     </>
