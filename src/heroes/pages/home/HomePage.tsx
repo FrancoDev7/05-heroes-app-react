@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CustomHeader } from "@/components/custom/CustomHeader";
@@ -6,11 +7,22 @@ import { HeroStats } from "@/heroes/components/HeroStats";
 import { HeroGrid } from "@/heroes/components/HeroGrid";
 import { CustomPagination } from "@/components/custom/CustomPagination";
 import { CustomBreadCrumbs } from "@/components/custom/CustomBreadCrumbs";
+import { getHeroesByPageAction } from "@/heroes/actions/get-heroes-by-page.action";
 
 export const HomePage = () => {
   const [activeTab, setActiveTab] = useState<
     "all" | "favorites" | "heroes" | "villanos"
   >("all");
+
+  const { data: heroesResponse } = useQuery({
+    queryKey: ["heroes"],
+    queryFn: () => getHeroesByPageAction(),
+    staleTime: 1000 * 60 * 5, // 5 Minutos
+  });
+  console.log({ heroesResponse });
+  // useEffect(() => {
+  //   getHeroesByPage().then();
+  // }, []);
 
   return (
     <>
@@ -50,22 +62,22 @@ export const HomePage = () => {
 
           {/* Mostrar todos los personajes */}
           <TabsContent value="all">
-            <HeroGrid />
+            <HeroGrid heroes={heroesResponse?.heroes ?? []} />
           </TabsContent>
           {/* Mostrar todos los Favoritos */}
           <TabsContent value="favorites">
             <h1>favoirtess</h1>
-            <HeroGrid />
+            <HeroGrid heroes={[]} />
           </TabsContent>
           {/* Mostrar todos los Heroes */}
           <TabsContent value="heroes">
             <h1>heroe</h1>
-            <HeroGrid />
+            <HeroGrid heroes={[]} />
           </TabsContent>
           {/* Mostrar todos los Villanos */}
           <TabsContent value="villanos">
             <h1>villanios</h1>
-            <HeroGrid />
+            <HeroGrid heroes={[]} />
           </TabsContent>
         </Tabs>
 
