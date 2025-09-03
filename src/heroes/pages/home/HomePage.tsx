@@ -17,13 +17,14 @@ export const HomePage = () => {
   const activeTab = searchParams.get("tab") ?? "all";
   const page = searchParams.get("page") ?? "1";
   const limit = searchParams.get("limit") ?? "6";
+  const category = searchParams.get("category") ?? "aaa";
 
   const selectedTab = useMemo(() => {
     const validTabs = ["all", "favorites", "heroes", "villains"];
     return validTabs.includes(activeTab) ? activeTab : "all";
   }, [activeTab]);
 
-  const { data: heroesResponse } = usePaginateHero(+page, +limit);
+  const { data: heroesResponse } = usePaginateHero(+page, +limit, category);
   const { data: summary } = useHeroSummary();
 
   return (
@@ -31,7 +32,7 @@ export const HomePage = () => {
       <>
         {/* Header */}
         <CustomHeader
-          title="Universo de SuperHeroes"
+          title="Universo de SuperHéroes"
           description="Descubre, explora y gestiona tus superhéroes y villanos favoritos"
         />
         <CustomBreadCrumbs currentPage="Super Héroes" />
@@ -46,6 +47,8 @@ export const HomePage = () => {
               onClick={() =>
                 setSearchParams((prev) => {
                   prev.set("tab", "all");
+                  prev.set("category", "all");
+                  prev.set("page", "1");
                   return prev;
                 })
               }
@@ -69,6 +72,8 @@ export const HomePage = () => {
               onClick={() =>
                 setSearchParams((prev) => {
                   prev.set("tab", "heroes");
+                  prev.set("category", "heroes");
+                  prev.set("page", "1");
                   return prev;
                 })
               }
@@ -80,11 +85,13 @@ export const HomePage = () => {
               onClick={() =>
                 setSearchParams((prev) => {
                   prev.set("tab", "villains");
+                  prev.set("category", "villains");
+                  prev.set("page", "1");
                   return prev;
                 })
               }
             >
-              Villains (2)
+              Villanos ({summary?.villainCount})
             </TabsTrigger>
           </TabsList>
 
@@ -100,12 +107,12 @@ export const HomePage = () => {
           {/* Mostrar todos los Heroes */}
           <TabsContent value="heroes">
             <h1>heroe</h1>
-            <HeroGrid heroes={[]} />
+            <HeroGrid heroes={heroesResponse?.heroes ?? []} />
           </TabsContent>
           {/* Mostrar todos los Villanos */}
           <TabsContent value="villanos">
             <h1>villanios</h1>
-            <HeroGrid heroes={[]} />
+            <HeroGrid heroes={heroesResponse?.heroes ?? []} />
           </TabsContent>
         </Tabs>
 
