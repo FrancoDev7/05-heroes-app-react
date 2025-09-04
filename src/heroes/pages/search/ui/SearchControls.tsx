@@ -37,7 +37,7 @@ export const SearchControls = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <Input
             ref={inputRef}
-            placeholder="Search heroes, villains, powers, teams..."
+            placeholder="Busca tus heroes, villanos..."
             className="pl-12 h-12 text-lg bg-white"
             onKeyDown={handleKeyDown}
             defaultValue={searchParams.get("name") ?? ""}
@@ -60,7 +60,7 @@ export const SearchControls = () => {
             }}
           >
             <Filter className="h-4 w-4 mr-2" />
-            Filters
+            Filtros
           </Button>
         </div>
       </div>
@@ -74,7 +74,7 @@ export const SearchControls = () => {
                 <h3 className="text-lg font-semibold">Filtros Avanzados</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
-              <div className="mt-4">
+              <div className="mt-2">
                 <label className="text-sm font-medium">
                   Minima Fuerza: {selectedStrength}/10
                 </label>

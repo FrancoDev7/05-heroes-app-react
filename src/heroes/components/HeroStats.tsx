@@ -36,7 +36,7 @@ export const HeroStats = () => {
       </HeroStatCard>
 
       <HeroStatCard
-        title="Favorites"
+        title="Favoritos"
         icon={<Heart className="h-4 w-4 text-muted-foreground" />}
       >
         <div className="text-2xl font-bold text-red-600">{favoriteCount}</div>
