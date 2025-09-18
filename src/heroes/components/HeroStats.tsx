@@ -10,10 +10,6 @@ export const HeroStats = () => {
   const { data: summary } = useHeroSummary();
   const { favoriteCount } = use(FavoriteHeroContext);
 
-  // const percentageFavorite = useMemo( () =>{
-  //   const percentage = favoriteCount / summary?.totalHeroes
-  // },[favoriteCount,summary])
-
   if (!summary) {
     return <div>Cargando...</div>;
   }
