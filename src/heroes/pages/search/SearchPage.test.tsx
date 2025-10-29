@@ -78,7 +78,7 @@ describe("SearchPage", () => {
     expect(container).toMatchSnapshot();
   });
 
-  test("should call search action with strength and name parameters", () => {
+  test("shoul call search action with strength and name parameters", () => {
     const { container } = renderSearchPage(["/search?strength=8&name=batman"]);
 
     expect(mockSearchHeroesAction).toHaveBeenCalledWith({
